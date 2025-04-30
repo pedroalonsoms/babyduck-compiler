@@ -1,0 +1,73 @@
+program pelos;
+
+var
+    i, j, k : int;
+    x, y : float;
+
+void uno(i : int)
+[
+    var x : int;
+    {
+        x = 1;
+        print("helllo world", x);
+    }
+];
+
+void dos(j : int)
+[
+    var y : int;
+    {
+        y = 1;
+    }
+];
+
+void tres(k : float)
+[
+    var y : int;
+    {
+    }
+];
+
+void cuatro()
+[
+    var y : int;
+    {
+    }
+];
+
+void cinco()
+[
+    {}
+];
+
+void seis()
+[
+    var
+        a, b, c : int;
+        d, e, f : float;
+    {
+        x = 1;
+    }
+];
+
+void siete(i: int, j:float)
+[
+    var
+        a, b, c : int;
+        d, e, f : float;
+    {
+        x = 1;
+    }
+];
+
+main {
+    uno(1);
+    dos(2);
+    tres(3.1);
+    cuatro();
+    cinco();
+    seis();
+    siete(1, 2.1);
+}
+
+end

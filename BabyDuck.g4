@@ -43,11 +43,11 @@ WHITESPACE: [ \t\r\n]+ -> skip; // We need this to skip whitespace
 
 // Grammar
 epsilon : ; // THIS IS FOR EMPTY/NULL GRAMMAR (epsilon)
-programa: PROGRAM ID SEMI_COLON vars funcs MAIN body END;
+programa: PROGRAM ID SEMI_COLON dec_vars dec_funcs MAIN body END;
 dec_vars: epsilon
         | vars;
-dec_funcs: epsilon
-         | funcs;
+dec_funcs: epsilon 
+         | funcs dec_funcs;
 vars: VAR vars_content;
 vars_content: list_id COLON type SEMI_COLON mas_vars_content;
 mas_vars_content: epsilon
