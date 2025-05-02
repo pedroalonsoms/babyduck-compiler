@@ -4,9 +4,8 @@ from antlr4 import *
 import os
 
 def main():
-
     # Leemos todos los test-cases adentro del folder
-    folder_path = './test_cases'
+    folder_path = './tests/syntax/test_cases'
     for filename in os.listdir(folder_path): # Por cada archivo
         file_path = os.path.join(folder_path, filename)
         with open(file_path, 'r', encoding='utf-8') as file:
