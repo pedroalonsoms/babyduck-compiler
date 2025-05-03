@@ -18,7 +18,7 @@ antlr4 -Dlanguage=Python3 BabyDuck.g4 -o antlr
 
 Create GUI
 ```bash
-antlr4-parse BabyDuck.g4 programa -gui test-cases/test-01.txt
+antlr4-parse BabyDuck.g4 programa -gui tests/syntax/test_cases/test_01.txt
 ```
 
 ```python

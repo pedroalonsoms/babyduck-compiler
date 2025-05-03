@@ -43,23 +43,28 @@ WHITESPACE: [ \t\r\n]+ -> skip; // We need this to skip whitespace
 
 // Grammar
 epsilon : ; // THIS IS FOR EMPTY/NULL GRAMMAR (epsilon)
-programa: PROGRAM ID SEMI_COLON dec_vars dec_funcs MAIN body END;
+program_id: ID;
+main: MAIN;
+programa: PROGRAM program_id SEMI_COLON dec_vars dec_funcs main body END;
 dec_vars: epsilon
         | vars;
 dec_funcs: epsilon 
          | funcs dec_funcs;
+var_id: ID;
+var_type: type;
 vars: VAR vars_content;
-vars_content: list_id COLON type SEMI_COLON mas_vars_content;
+vars_content: list_id COLON var_type SEMI_COLON mas_vars_content;
 mas_vars_content: epsilon
                 | vars_content;
-list_id: ID
-       | ID COMMA list_id;
+list_id: var_id
+       | var_id COMMA list_id;
 type: INT
     | FLOAT;
-funcs: VOID ID LEFT_PARENTHESIS list_params RIGHT_PARENTHESIS LEFT_BRACKET dec_vars body RIGHT_BRACKET SEMI_COLON;
+func_id: ID;
+funcs: VOID func_id LEFT_PARENTHESIS list_params RIGHT_PARENTHESIS LEFT_BRACKET dec_vars body RIGHT_BRACKET SEMI_COLON;
 list_params: epsilon
-           | ID COLON type
-           | ID COLON type COMMA list_params;
+           | var_id COLON var_type
+           | var_id COLON var_type COMMA list_params;
 body: LEFT_CURLY_BRACE dec_statement RIGHT_CURLY_BRACE;
 dec_statement: epsilon
              | statement

@@ -17,6 +17,24 @@ class BabyDuckListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by BabyDuckParser#program_id.
+    def enterProgram_id(self, ctx:BabyDuckParser.Program_idContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#program_id.
+    def exitProgram_id(self, ctx:BabyDuckParser.Program_idContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#main.
+    def enterMain(self, ctx:BabyDuckParser.MainContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#main.
+    def exitMain(self, ctx:BabyDuckParser.MainContext):
+        pass
+
+
     # Enter a parse tree produced by BabyDuckParser#programa.
     def enterPrograma(self, ctx:BabyDuckParser.ProgramaContext):
         pass
@@ -41,6 +59,24 @@ class BabyDuckListener(ParseTreeListener):
 
     # Exit a parse tree produced by BabyDuckParser#dec_funcs.
     def exitDec_funcs(self, ctx:BabyDuckParser.Dec_funcsContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#var_id.
+    def enterVar_id(self, ctx:BabyDuckParser.Var_idContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#var_id.
+    def exitVar_id(self, ctx:BabyDuckParser.Var_idContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#var_type.
+    def enterVar_type(self, ctx:BabyDuckParser.Var_typeContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#var_type.
+    def exitVar_type(self, ctx:BabyDuckParser.Var_typeContext):
         pass
 
 
@@ -86,6 +122,15 @@ class BabyDuckListener(ParseTreeListener):
 
     # Exit a parse tree produced by BabyDuckParser#type.
     def exitType(self, ctx:BabyDuckParser.TypeContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#func_id.
+    def enterFunc_id(self, ctx:BabyDuckParser.Func_idContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#func_id.
+    def exitFunc_id(self, ctx:BabyDuckParser.Func_idContext):
         pass
 
 
