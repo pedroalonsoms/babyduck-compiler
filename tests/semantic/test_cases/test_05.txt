@@ -1,0 +1,26 @@
+program Test1;
+var
+  global1, global2 : int;
+  global3 : float;
+
+void testFunc(param1: int, param2: float) [
+     var
+      local1 : int;
+      local2 : float;
+    {
+        local1 = param1 + 10;
+        local2 = param2 * 2.5;
+        print(local1, local2);
+    }
+];
+
+main 
+{
+    global1 = 5;
+    global2 = 10;
+    global3 = 15.5;
+    
+    testFunc(global1, global3);
+    testFunc(global2, 20.0);
+}
+end
