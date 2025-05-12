@@ -22,7 +22,7 @@ WHILE: 'while';
 DO: 'do';
 GREATER_THAN: '>';
 LESS_THAN: '<';
-NOT_EQUAL: '!=';
+NOT_EQUALS: '!=';
 PLUS: '+';
 MINUS: '-';
 TIMES: '*';
@@ -86,19 +86,25 @@ print: PRINT LEFT_PARENTHESIS print_args RIGHT_PARENTHESIS SEMI_COLON;
 print_args: expression
           | CTE_STRING
           | print_args COMMA print_args;
+expression_operation: GREATER_THAN
+                    | LESS_THAN
+                    | NOT_EQUALS;
 expression: exp
-          | exp GREATER_THAN exp
-          | exp LESS_THAN exp
-          | exp NOT_EQUAL exp;
+          | exp expression_operation expression;
+exp_operation: PLUS
+             | MINUS;
 exp: termino
-   | termino PLUS exp
-   | termino MINUS exp;
+   | termino exp_operation exp;
+termino_operation: TIMES
+                 | DIVIDE;
 termino: factor
-       | factor TIMES termino
-       | factor DIVIDE termino;
-factor: LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
-      | factor_sign ID
-      | factor_sign cte;
+       | factor termino_operation termino;
+factor: factor_with_parenthesis
+      | factor_with_id
+      | factor_with_cte;
+factor_with_parenthesis: LEFT_PARENTHESIS expression RIGHT_PARENTHESIS; 
+factor_with_id: factor_sign ID;
+factor_with_cte: factor_sign cte;
 factor_sign: epsilon
            | PLUS
            | MINUS;

@@ -1,0 +1,14 @@
+program pelos;
+
+var
+    a, b, c : int;
+
+main {
+    a = 1;
+    b = 2;
+    if (a < b) {
+
+    };
+}
+
+end

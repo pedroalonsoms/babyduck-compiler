@@ -242,6 +242,15 @@ class BabyDuckListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by BabyDuckParser#expression_operation.
+    def enterExpression_operation(self, ctx:BabyDuckParser.Expression_operationContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#expression_operation.
+    def exitExpression_operation(self, ctx:BabyDuckParser.Expression_operationContext):
+        pass
+
+
     # Enter a parse tree produced by BabyDuckParser#expression.
     def enterExpression(self, ctx:BabyDuckParser.ExpressionContext):
         pass
@@ -251,12 +260,30 @@ class BabyDuckListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by BabyDuckParser#exp_operation.
+    def enterExp_operation(self, ctx:BabyDuckParser.Exp_operationContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#exp_operation.
+    def exitExp_operation(self, ctx:BabyDuckParser.Exp_operationContext):
+        pass
+
+
     # Enter a parse tree produced by BabyDuckParser#exp.
     def enterExp(self, ctx:BabyDuckParser.ExpContext):
         pass
 
     # Exit a parse tree produced by BabyDuckParser#exp.
     def exitExp(self, ctx:BabyDuckParser.ExpContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#termino_operation.
+    def enterTermino_operation(self, ctx:BabyDuckParser.Termino_operationContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#termino_operation.
+    def exitTermino_operation(self, ctx:BabyDuckParser.Termino_operationContext):
         pass
 
 
@@ -275,6 +302,33 @@ class BabyDuckListener(ParseTreeListener):
 
     # Exit a parse tree produced by BabyDuckParser#factor.
     def exitFactor(self, ctx:BabyDuckParser.FactorContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#factor_with_parenthesis.
+    def enterFactor_with_parenthesis(self, ctx:BabyDuckParser.Factor_with_parenthesisContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#factor_with_parenthesis.
+    def exitFactor_with_parenthesis(self, ctx:BabyDuckParser.Factor_with_parenthesisContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#factor_with_id.
+    def enterFactor_with_id(self, ctx:BabyDuckParser.Factor_with_idContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#factor_with_id.
+    def exitFactor_with_id(self, ctx:BabyDuckParser.Factor_with_idContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#factor_with_cte.
+    def enterFactor_with_cte(self, ctx:BabyDuckParser.Factor_with_cteContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#factor_with_cte.
+    def exitFactor_with_cte(self, ctx:BabyDuckParser.Factor_with_cteContext):
         pass
 
 

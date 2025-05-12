@@ -24,3 +24,8 @@ antlr4-parse BabyDuck.g4 programa -gui tests/syntax/test_cases/test_01.txt
 ```python
 python main.py
 ```
+
+Run tests
+```python
+pytest -s -v semantic_test.py
+```

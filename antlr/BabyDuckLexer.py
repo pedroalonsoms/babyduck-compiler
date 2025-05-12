@@ -131,7 +131,7 @@ class BabyDuckLexer(Lexer):
     DO = 19
     GREATER_THAN = 20
     LESS_THAN = 21
-    NOT_EQUAL = 22
+    NOT_EQUALS = 22
     PLUS = 23
     MINUS = 24
     TIMES = 25
@@ -159,7 +159,7 @@ class BabyDuckLexer(Lexer):
             "PROGRAM", "SEMI_COLON", "MAIN", "END", "VAR", "COMMA", "COLON", 
             "INT", "FLOAT", "IF", "ELSE", "LEFT_CURLY_BRACE", "RIGHT_CURLY_BRACE", 
             "PRINT", "LEFT_PARENTHESIS", "RIGHT_PARENTHESIS", "ASSIGN", 
-            "WHILE", "DO", "GREATER_THAN", "LESS_THAN", "NOT_EQUAL", "PLUS", 
+            "WHILE", "DO", "GREATER_THAN", "LESS_THAN", "NOT_EQUALS", "PLUS", 
             "MINUS", "TIMES", "DIVIDE", "VOID", "LEFT_BRACKET", "RIGHT_BRACKET", 
             "CTE_FLOAT", "CTE_INT", "CTE_STRING", "ID", "WHITESPACE" ]
 
@@ -167,7 +167,7 @@ class BabyDuckLexer(Lexer):
                   "COLON", "INT", "FLOAT", "IF", "ELSE", "LEFT_CURLY_BRACE", 
                   "RIGHT_CURLY_BRACE", "PRINT", "LEFT_PARENTHESIS", "RIGHT_PARENTHESIS", 
                   "ASSIGN", "WHILE", "DO", "GREATER_THAN", "LESS_THAN", 
-                  "NOT_EQUAL", "PLUS", "MINUS", "TIMES", "DIVIDE", "VOID", 
+                  "NOT_EQUALS", "PLUS", "MINUS", "TIMES", "DIVIDE", "VOID", 
                   "LEFT_BRACKET", "RIGHT_BRACKET", "CTE_FLOAT", "CTE_INT", 
                   "CTE_STRING", "ID", "WHITESPACE" ]
 

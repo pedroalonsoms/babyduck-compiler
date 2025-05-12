@@ -1,7 +1,7 @@
 program pelos;
 
 var
-    i, j, k : int;
+    i, j, k, a : int;
     x, y : float;
 
 void uno(i : int)

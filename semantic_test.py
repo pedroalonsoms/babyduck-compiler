@@ -1,54 +1,61 @@
+import os
+import pytest
+from antlr4 import *
 from antlr.BabyDuckLexer import BabyDuckLexer
 from antlr.BabyDuckParser import BabyDuckParser
 from semantics.BabyDuckSemanticListener import BabyDuckSemanticListener
-from antlr4 import *
-import os
-import pytest
 
-def main():
-    # Leemos todos los test-cases adentro del folder
-    folder_path = './tests/semantic/test_cases'
-    for filename in os.listdir(folder_path): # Por cada archivo
-        file_path = os.path.join(folder_path, filename)
-        with open(file_path, 'r', encoding='utf-8') as file:
-            # Leemos los contenidos de ese test-file
-            test_input = file.read()
+TEST_CASES_DIR = './tests/semantic/test_cases'
 
-            # Lo metemos a los files del baby-duck generados por ANTLR
-            input_stream = InputStream(test_input)
-            lexer = BabyDuckLexer(input_stream)
-            stream = CommonTokenStream(lexer)
-            parser = BabyDuckParser(stream)
+def load_test_case(filename: str) -> str:
+    """Load the contents of a single test case file."""
 
-            tree = parser.programa()  # 'programa' es nuestra "startRule"
+    file_path = os.path.join(TEST_CASES_DIR, filename)
+    with open(file_path, 'r', encoding='utf-8') as f:
+        return f.read()
 
-            walker = ParseTreeWalker()
-            listener = BabyDuckSemanticListener()
-            if filename == "test_02.txt":
-                with pytest.raises(Exception) as error:
-                    walker.walk(listener, tree)
-                
-                assert str(error.value) == "ERROR: Variable 'k' was already declared on function directory 'pelos'"
-                print("ARCHIVO = ", file_path, "TUVO UN ERROR: ", str(error.value))
-            elif filename == "test_03.txt":
-                with pytest.raises(Exception) as error:
-                    walker.walk(listener, tree)
-                
-                assert str(error.value) == "ERROR: Function 'uno' was already declared"
-                print("ARCHIVO = ", file_path, "TUVO UN ERROR: ", str(error.value))
-            elif filename == "test_04.txt":
-                with pytest.raises(Exception) as error:
-                    walker.walk(listener, tree)
-                
-                assert str(error.value) == "ERROR: Function 'uno' was already declared"
-                print("ARCHIVO = ", file_path, "TUVO UN ERROR: ", str(error.value))
-            else:
-                walker.walk(listener, tree)
+def parse_and_walk(input_str):
+    input_stream = InputStream(input_str)
+    lexer = BabyDuckLexer(input_stream)
+    stream = CommonTokenStream(lexer)
+    parser = BabyDuckParser(stream)
+    tree = parser.programa()
+    walker = ParseTreeWalker()
+    listener = BabyDuckSemanticListener()
+    walker.walk(listener, tree)
+    return listener
 
-                # Imprimir el directorio de funciones
-                print("ARCHIVO = ", file_path, "DIRECTORIO DE FUNCIONES = ", listener.dirfuncs)
-            
-            print()
+def test_test_01():
+    listener = parse_and_walk(load_test_case("test_01.txt"))
+    print(f"DIRFUNCS = {listener.dirfuncs}")
+    assert listener.dirfuncs is not None
 
-if __name__ == "__main__":
-    main()
+def test_test_02():
+    with pytest.raises(Exception) as error:
+        parse_and_walk(load_test_case("test_02.txt"))
+    assert str(error.value) == "ERROR: Variable 'k' was already declared on function directory 'pelos'"
+
+def test_test_03():
+    with pytest.raises(Exception) as error:
+        parse_and_walk(load_test_case("test_03.txt"))
+    assert str(error.value) == "ERROR: Function 'uno' was already declared"
+
+def test_test_04():
+    with pytest.raises(Exception) as error:
+        parse_and_walk(load_test_case("test_04.txt"))
+    assert str(error.value) == "ERROR: Function 'uno' was already declared"
+
+def test_test_05():
+    listener = parse_and_walk(load_test_case("test_05.txt"))
+    print(f"DIRFUNCS = {listener.dirfuncs}")
+    assert listener.dirfuncs is not None
+
+def test_test_06():
+    listener = parse_and_walk(load_test_case("test_06.txt"))
+    print("QUADRUPLES:", listener.quadruples)
+    assert len(listener.quadruples) > 0
+
+def test_test_07():
+    listener = parse_and_walk(load_test_case("test_07.txt"))
+    print("QUADRUPLES:", listener.quadruples)
+    assert len(listener.quadruples) > 0
