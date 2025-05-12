@@ -1,0 +1,32 @@
+program pelos;
+
+var
+    a, b : int;
+    c: float;
+
+void uno()
+[
+    var
+        a, b : int;
+        c: float;
+    {
+        a = 1;
+        b = 2;
+        c = 8.7 + a * b /(1.0 + 5);
+    }
+];
+
+main {
+    a = 5;
+    b = 6;
+
+    if (a < b) {
+        c = a / b;
+        print(c);
+    } else {
+        c = a / (b+1);
+        print(c);
+    };
+}
+
+end

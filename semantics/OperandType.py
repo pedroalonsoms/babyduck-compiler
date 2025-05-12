@@ -9,6 +9,9 @@ class OperandType(Enum):
     LESS_THAN = auto()
     NOT_EQUALS = auto()
     ASSIGN = auto()
+    LEFT_PARENTHESIS = auto()
+    RIGHT_PARENTHESIS = auto()
+    PRINT = auto()
 
     def to_symbol(self) -> str:
         symbol_map = {
@@ -20,5 +23,8 @@ class OperandType(Enum):
             OperandType.LESS_THAN: "<",
             OperandType.NOT_EQUALS: "!=",
             OperandType.ASSIGN: "=",
+            OperandType.LEFT_PARENTHESIS: "(",
+            OperandType.RIGHT_PARENTHESIS: ")",
+            OperandType.PRINT: "print",
         }
         return symbol_map[self]

@@ -1,0 +1,22 @@
+program pelos;
+
+var
+    a, b : float;
+    c: int;
+
+void uno()
+[
+    var
+        a, b : int;
+        c: float;
+    {
+        a = 1;
+        b = 2;
+        c = 8.7 + a * b /(1.0 + 5) * d;
+    }
+];
+
+main {
+}
+
+end

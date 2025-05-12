@@ -129,9 +129,18 @@ class BabyDuckSemanticListener(BabyDuckListener):
         elif ctx.NOT_EQUALS():
             self.quadruples_operands_stack.append(OperandType.NOT_EQUALS)
 
+    def enterFactor_with_parenthesis_left_parenthesis(self, ctx):
+        self.quadruples_operands_stack.append(OperandType.LEFT_PARENTHESIS)
+
+    def enterFactor_with_parenthesis_right_parenthesis(self, ctx):
+        if self.quadruples_operands_stack and self.quadruples_operands_stack[-1] == OperandType.LEFT_PARENTHESIS:
+            self.quadruples_operands_stack.pop()
+        else:
+            # TODO: maybe this is impossible lol
+            raise Exception(f"ERROR: Cannot process right parenthesis because there's no matching left parenthesis")
+
     def exitTermino(self, ctx):
         # TODO: comment this better
-        print(self.quadruples_operands_stack)
         if self.quadruples_operands_stack and self.quadruples_operands_stack[-1] in [OperandType.PLUS, OperandType.MINUS]:
             right_var = self.quadruples_variables_stack.pop()
             left_var = self.quadruples_variables_stack.pop()
@@ -152,7 +161,6 @@ class BabyDuckSemanticListener(BabyDuckListener):
 
     def exitFactor(self, ctx):
         # TODO: comment this better
-        print(self.quadruples_operands_stack)
         if self.quadruples_operands_stack and self.quadruples_operands_stack[-1] in [OperandType.TIMES, OperandType.DIVIDE]:
             right_var = self.quadruples_variables_stack.pop()
             left_var = self.quadruples_variables_stack.pop()
@@ -173,7 +181,6 @@ class BabyDuckSemanticListener(BabyDuckListener):
     
     def exitExp(self, ctx):
         # TODO: comment this better
-        print(self.quadruples_operands_stack)
         if self.quadruples_operands_stack and self.quadruples_operands_stack[-1] in [OperandType.GREATER_THAN, OperandType.LESS_THAN, OperandType.NOT_EQUALS]:
             right_var = self.quadruples_variables_stack.pop()
             left_var = self.quadruples_variables_stack.pop()
@@ -208,7 +215,6 @@ class BabyDuckSemanticListener(BabyDuckListener):
 
     def exitAssign(self, ctx):
         # TODO: comment this better
-        print(self.quadruples_operands_stack)
         if self.quadruples_operands_stack and self.quadruples_operands_stack[-1] == OperandType.ASSIGN:
             right_var = self.quadruples_variables_stack.pop()
             left_var = self.quadruples_variables_stack.pop()
@@ -219,6 +225,22 @@ class BabyDuckSemanticListener(BabyDuckListener):
 
             tmp_quadruple_var = "t" + str(self.quadruples_tmp_var_index)
             quadruple = " ".join([operand.to_symbol(), right_var.name, left_var.name])
+            # self.quadruples_variables_stack.append(Variable(tmp_quadruple_var, result_type))
+
+            # WE DON'T REALLY WANT THIS
+            # self.quadruples_tmp_var_index += 1
+
+            self.quadruples.append(quadruple)
+
+    def enterPrint(self, ctx):
+        self.quadruples_operands_stack.append(OperandType.PRINT)
+    
+    def exitPrint(self, ctx):
+        if self.quadruples_operands_stack and self.quadruples_operands_stack[-1] == OperandType.PRINT:
+            var = self.quadruples_variables_stack.pop()
+            operand = self.quadruples_operands_stack.pop()
+
+            quadruple = " ".join([operand.to_symbol(), var.name])
             # self.quadruples_variables_stack.append(Variable(tmp_quadruple_var, result_type))
 
             # WE DON'T REALLY WANT THIS

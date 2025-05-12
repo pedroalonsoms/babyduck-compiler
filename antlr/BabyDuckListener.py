@@ -305,6 +305,24 @@ class BabyDuckListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by BabyDuckParser#factor_with_parenthesis_left_parenthesis.
+    def enterFactor_with_parenthesis_left_parenthesis(self, ctx:BabyDuckParser.Factor_with_parenthesis_left_parenthesisContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#factor_with_parenthesis_left_parenthesis.
+    def exitFactor_with_parenthesis_left_parenthesis(self, ctx:BabyDuckParser.Factor_with_parenthesis_left_parenthesisContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#factor_with_parenthesis_right_parenthesis.
+    def enterFactor_with_parenthesis_right_parenthesis(self, ctx:BabyDuckParser.Factor_with_parenthesis_right_parenthesisContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#factor_with_parenthesis_right_parenthesis.
+    def exitFactor_with_parenthesis_right_parenthesis(self, ctx:BabyDuckParser.Factor_with_parenthesis_right_parenthesisContext):
+        pass
+
+
     # Enter a parse tree produced by BabyDuckParser#factor_with_parenthesis.
     def enterFactor_with_parenthesis(self, ctx:BabyDuckParser.Factor_with_parenthesisContext):
         pass

@@ -102,7 +102,9 @@ termino: factor
 factor: factor_with_parenthesis
       | factor_with_id
       | factor_with_cte;
-factor_with_parenthesis: LEFT_PARENTHESIS expression RIGHT_PARENTHESIS; 
+factor_with_parenthesis_left_parenthesis: LEFT_PARENTHESIS;
+factor_with_parenthesis_right_parenthesis: RIGHT_PARENTHESIS;
+factor_with_parenthesis: factor_with_parenthesis_left_parenthesis expression factor_with_parenthesis_right_parenthesis; 
 factor_with_id: factor_sign ID;
 factor_with_cte: factor_sign cte;
 factor_sign: epsilon

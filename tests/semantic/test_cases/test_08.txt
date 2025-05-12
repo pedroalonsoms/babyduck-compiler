@@ -1,0 +1,13 @@
+program pelos;
+
+var
+    a, b : int;
+    c: float;
+
+main {
+    a = 1;
+    b = 2;
+    c = 8.7 + a * b /(1.0 + 5);
+}
+
+end
