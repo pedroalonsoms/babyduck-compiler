@@ -3,11 +3,12 @@ import pytest
 from antlr4 import *
 from antlr.BabyDuckLexer import BabyDuckLexer
 from antlr.BabyDuckParser import BabyDuckParser
-from semantics.BabyDuckSemanticListener import BabyDuckSemanticListener
+from semantics.BabyDuckSemanticListener import BabyDuckSemanticListener, Variable
 from semantics.Function import Function
 from semantics.FunctionType import FunctionType
-from semantics.Variable import Variable
 from semantics.VariableType import VariableType
+from semantics.VariableScope import VariableScope
+from semantics.VirtualDirections import VirtualDirections
 
 TEST_CASES_DIR = './tests/semantic/test_cases'
 
@@ -27,6 +28,7 @@ def parse_and_walk(input_str):
     walker = ParseTreeWalker()
     listener = BabyDuckSemanticListener()
     walker.walk(listener, tree)
+    VirtualDirections.reset_counters()
     return listener
 
 def test_test_01():
@@ -37,20 +39,21 @@ def test_test_01():
             name='pelos',
             type=FunctionType.VOID,
             vars={
-                'a': Variable(name='a', type=VariableType.INT),
-                'k': Variable(name='k', type=VariableType.INT),
-                'j': Variable(name='j', type=VariableType.INT),
-                'i': Variable(name='i', type=VariableType.INT),
-                'y': Variable(name='y', type=VariableType.FLOAT),
-                'x': Variable(name='x', type=VariableType.FLOAT),
+                'a': Variable(name='a', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_000),
+                'k': Variable(name='k', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_001),
+                'j': Variable(name='j', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_002),
+                'i': Variable(name='i', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_003),
+                'y': Variable(name='y', type=VariableType.FLOAT, scope=VariableScope.GLOBAL, virtual_direction=5_000),
+                'x': Variable(name='x', type=VariableType.FLOAT, scope=VariableScope.GLOBAL, virtual_direction=5_001),
             }
         ),
         'uno': Function(
             name='uno',
             type=FunctionType.VOID,
             vars={
-                'i': Variable(name='i', type=VariableType.INT),
-                'x': Variable(name='x', type=VariableType.INT),
+                # TODO: fix this stuff
+                'x': Variable(name='x', type=VariableType.INT, scope=VariableScope.LOCAL, virtual_direction=9_000),
+                'i': Variable(name='i', type=VariableType.INT, scope=VariableScope.LOCAL, virtual_direction=9_001),
             }
         )
     }

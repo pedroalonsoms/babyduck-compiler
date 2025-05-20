@@ -4,3 +4,4 @@ class VariableType(Enum):
     INT = auto()
     FLOAT = auto()
     BOOLEAN = auto()
+    STRING = auto()
