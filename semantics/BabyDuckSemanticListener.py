@@ -244,6 +244,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
     def enterPrint(self, ctx):
         self.quadruples_operands_stack.append(OperandType.PRINT)
     
+    # TODO: IMPORTANT, FIX THIS SO THAT IT WORKS WITH MULTIPLE PRINTS
     def exitPrint(self, ctx):
         if self.quadruples_operands_stack and self.quadruples_operands_stack[-1] == OperandType.PRINT:
             var = self.quadruples_variables_stack.pop()
@@ -296,3 +297,37 @@ class BabyDuckSemanticListener(BabyDuckListener):
         else:
             # Throw exception if the stack is empty
             raise Exception("ERROR: Unmatched 'end-if' encountered. No corresponding 'if' statement was found on the stack.")
+        
+    def enterCycle(self, ctx):
+        self.quadruple_jumps_stack.append(len(self.quadruples) + 1)
+
+    def enterCycle_right_parenthesis(self, ctx):
+        if self.quadruples_variables_stack:
+            var = self.quadruples_variables_stack.pop()
+
+            if var.variable.type != VariableType.BOOLEAN:
+                raise Exception(f"ERROR: Incompatible condition type {var.variable.type} for while statement (it should be boolean)")
+
+            quadruple = " ".join([OperandType.GOTO_F.to_symbol(), 
+                                    var.print(),
+                                    "TO_FILL"])
+            
+            self.quadruples.append(quadruple)
+            self.quadruple_jumps_stack.append(len(self.quadruples) - 1)
+
+    def enterCycle_semi_colon(self, ctx):
+        # Save the "GOTO_F" quadruple index
+        # TODO: check if the stack is empty
+        goto_f_quadruple_index = self.quadruple_jumps_stack.pop()
+
+        # Save the "while_start" quadruple index
+        # TODO: check if the stack is empty
+        while_start_quadruple_index = self.quadruple_jumps_stack.pop()
+
+        # Create and push the "GOTO" quadruple
+        quadruple = " ".join([OperandType.GOTO.to_symbol(), 
+                        str(while_start_quadruple_index)])
+        self.quadruples.append(quadruple)
+
+        # We need to fill the "TO_FILL" in the previous quadruple (for the GOTO_F statement)
+        self.quadruples[goto_f_quadruple_index] = self.quadruples[goto_f_quadruple_index].replace("TO_FILL", str(len(self.quadruples) + 1))        

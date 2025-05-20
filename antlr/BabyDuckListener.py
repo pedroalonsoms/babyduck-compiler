@@ -224,6 +224,24 @@ class BabyDuckListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by BabyDuckParser#cycle_right_parenthesis.
+    def enterCycle_right_parenthesis(self, ctx:BabyDuckParser.Cycle_right_parenthesisContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#cycle_right_parenthesis.
+    def exitCycle_right_parenthesis(self, ctx:BabyDuckParser.Cycle_right_parenthesisContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#cycle_semi_colon.
+    def enterCycle_semi_colon(self, ctx:BabyDuckParser.Cycle_semi_colonContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#cycle_semi_colon.
+    def exitCycle_semi_colon(self, ctx:BabyDuckParser.Cycle_semi_colonContext):
+        pass
+
+
     # Enter a parse tree produced by BabyDuckParser#cycle.
     def enterCycle(self, ctx:BabyDuckParser.CycleContext):
         pass

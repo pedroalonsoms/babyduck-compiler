@@ -1,0 +1,15 @@
+program pelos;
+
+var
+    A, B : int;
+
+main {
+    A = 1;
+    B = 6;
+
+    while (A < B) do {
+        A = A + 1;
+    };
+}
+
+end
