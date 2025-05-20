@@ -1,0 +1,17 @@
+program pelos;
+
+var
+    a, b, c : int;
+    d: float;
+
+main {
+    a = 1;
+    b = 2;
+    c = 3;
+    d = a + b * -c * 8.0;
+    if (a < b) {
+        print("HELLO WORLD");
+    };
+}
+
+end

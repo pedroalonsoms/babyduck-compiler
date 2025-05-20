@@ -14,4 +14,4 @@ class QuadrupleStackVariable:
     def print(self):
       if self.listener.quadruple_print_mode == QuadruplePrintMode.USE_VARIABLE_NAME:
           return (self.sign if self.sign else "") + self.variable.name
-      return (self.sign if self.sign else "") + self.variable.virtual_direction
+      return (self.sign if self.sign else "") + str(self.variable.virtual_direction)

@@ -40,4 +40,4 @@ class Variable:
     def print(self):
       if self.listener.quadruple_print_mode == QuadruplePrintMode.USE_VARIABLE_NAME:
           return self.name
-      return self.virtual_direction
+      return str(self.virtual_direction)

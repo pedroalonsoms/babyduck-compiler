@@ -163,7 +163,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
             result_type = SEMANTIC_CUBE[semantic_cube_key]
 
             tmp_var = Variable(listener=self, type=result_type, scope=VariableScope.TEMPORAL)
-            quadruple = " ".join([operand.to_symbol(), 
+            quadruple = " ".join([operand.print(self.quadruple_print_mode), 
                                    left_var.print(), 
                                    right_var.print(), 
                                    tmp_var.print()])
@@ -184,7 +184,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
             result_type = SEMANTIC_CUBE[semantic_cube_key]
 
             tmp_var = Variable(listener=self, type=result_type, scope=VariableScope.TEMPORAL)
-            quadruple = " ".join([operand.to_symbol(),
+            quadruple = " ".join([operand.print(self.quadruple_print_mode),
                                    left_var.print(), 
                                    right_var.print(), 
                                    tmp_var.print()])
@@ -205,7 +205,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
             result_type = SEMANTIC_CUBE[semantic_cube_key]
 
             tmp_var = Variable(listener=self, type=result_type, scope=VariableScope.TEMPORAL)
-            quadruple = " ".join([operand.to_symbol(), 
+            quadruple = " ".join([operand.print(self.quadruple_print_mode), 
                                    left_var.print(),
                                    right_var.print(), 
                                    tmp_var.print()])
@@ -236,7 +236,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
             if (left_var.variable.type != right_var.variable.type):
                 raise Exception(f"ERROR: Incompatible assignation between type {left_var.type} and type {right_var.type}")
 
-            quadruple = " ".join([operand.to_symbol(), 
+            quadruple = " ".join([operand.print(self.quadruple_print_mode), 
                                    right_var.print(), 
                                    left_var.print()])
             self.quadruples.append(quadruple)
@@ -256,7 +256,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
             var = self.quadruples_variables_stack.pop()
             operand = self.quadruples_operands_stack.pop()
 
-            quadruple = " ".join([operand.to_symbol(), 
+            quadruple = " ".join([operand.print(self.quadruple_print_mode), 
                                    var.print()])
             self.quadruples.append(quadruple)
         else:
@@ -272,7 +272,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
             var = self.quadruples_variables_stack.pop()
             operand = self.quadruples_operands_stack.pop()
 
-            quadruple = " ".join([operand.to_symbol(), 
+            quadruple = " ".join([operand.print(self.quadruple_print_mode), 
                                    var.print()])
             self.quadruples.append(quadruple)
         else:
@@ -286,7 +286,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
             if var.variable.type != VariableType.BOOLEAN:
                 raise Exception(f"ERROR: Incompatible condition type {var.variable.type} for if statement (it should be boolean)")
 
-            quadruple = " ".join([OperandType.GOTO_F.to_symbol(), 
+            quadruple = " ".join([OperandType.GOTO_F.print(self.quadruple_print_mode), 
                                     var.print(),
                                     "TO_FILL"])
             
@@ -297,7 +297,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
     
     def enterIf_condition_else(self, ctx):
         # Create and push the "GOTO" quadruple
-        quadruple = " ".join([OperandType.GOTO.to_symbol(), 
+        quadruple = " ".join([OperandType.GOTO.print(self.quadruple_print_mode), 
                         "TO_FILL"])
         self.quadruples.append(quadruple)
         goto_quadruple_index = len(self.quadruples)-1 # Note how we're not pushing the quadruple index to the stack yet
@@ -333,7 +333,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
             if var.variable.type != VariableType.BOOLEAN:
                 raise Exception(f"ERROR: Incompatible condition type {var.variable.type} for while statement (it should be boolean)")
 
-            quadruple = " ".join([OperandType.GOTO_F.to_symbol(), 
+            quadruple = " ".join([OperandType.GOTO_F.print(self.quadruple_print_mode), 
                                     var.print(),
                                     "TO_FILL"])
             
@@ -350,7 +350,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
         while_start_quadruple_index = self.quadruple_jumps_stack.pop()
 
         # Create and push the "GOTO" quadruple
-        quadruple = " ".join([OperandType.GOTO.to_symbol(), 
+        quadruple = " ".join([OperandType.GOTO.print(self.quadruple_print_mode), 
                         str(while_start_quadruple_index)])
         self.quadruples.append(quadruple)
 

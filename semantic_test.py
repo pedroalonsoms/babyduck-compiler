@@ -8,6 +8,7 @@ from semantics.Function import Function
 from semantics.FunctionType import FunctionType
 from semantics.VariableType import VariableType
 from semantics.VariableScope import VariableScope
+from semantics.QuadruplePrintMode import QuadruplePrintMode
 
 TEST_CASES_DIR = './tests/semantic/test_cases'
 
@@ -18,14 +19,14 @@ def load_test_case(filename: str) -> str:
     with open(file_path, 'r', encoding='utf-8') as f:
         return f.read()
 
-def parse_and_walk(input_str):
+def parse_and_walk(input_str, quadruple_print_mode: QuadruplePrintMode = QuadruplePrintMode.USE_VARIABLE_NAME):
     input_stream = InputStream(input_str)
     lexer = BabyDuckLexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = BabyDuckParser(stream)
     tree = parser.programa()
     walker = ParseTreeWalker()
-    listener = BabyDuckSemanticListener()
+    listener = BabyDuckSemanticListener(quadruple_print_mode=quadruple_print_mode)
     walker.walk(listener, tree)
     return listener
 
@@ -280,3 +281,37 @@ def test_test_16():
                                    'PRINT t1', 
                                    '* A B t2', 
                                    'PRINT t2']
+    
+def test_test_16():
+    listener = parse_and_walk(load_test_case("test_16.txt"))
+    assert listener.quadruples == ['= 1.0 A', 
+                                   '= 2.0 B', 
+                                   '+ A B t1', 
+                                   'PRINT t1', 
+                                   '* A B t2', 
+                                   'PRINT t2']
+    
+def test_test_17():
+    listener = parse_and_walk(load_test_case("test_17.txt"))
+    assert listener.quadruples == ['= 1 a', 
+                                   '= 2 b', 
+                                   '= 3 c', 
+                                   '* b -c t1', 
+                                   '* t1 8.0 t2', 
+                                   '+ a t2 t3', 
+                                   '= t3 d', 
+                                   '< a b t4',
+                                   'GOTO_F t4 11', 
+                                   'PRINT "HELLO WORLD"']
+    
+    virtual_direction_listener = parse_and_walk(load_test_case("test_17.txt"), quadruple_print_mode=QuadruplePrintMode.USE_VIRTUAL_DIRECTION)
+    assert virtual_direction_listener.quadruples == ['8 29000 1002', 
+                                                     '8 29001 1001',
+                                                     '8 29002 1000',
+                                                     '3 1001 -1000 17000',
+                                                     '3 17000 33000 21000',
+                                                     '1 1002 21000 21001',
+                                                     '8 21001 5000',
+                                                     '6 1002 1001 25000',
+                                                     '12 25000 11',
+                                                     '11 37000']
