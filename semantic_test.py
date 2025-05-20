@@ -8,7 +8,6 @@ from semantics.Function import Function
 from semantics.FunctionType import FunctionType
 from semantics.VariableType import VariableType
 from semantics.VariableScope import VariableScope
-from semantics.VirtualDirections import VirtualDirections
 
 TEST_CASES_DIR = './tests/semantic/test_cases'
 
@@ -109,7 +108,8 @@ def test_test_07():
     listener = parse_and_walk(load_test_case("test_07.txt"))
     assert listener.quadruples == ['= 1 a', 
                                    '= 2 b', 
-                                   '< a b t1']
+                                   '< a b t1',
+                                   'GOTO_F t1 5']
 
 def test_test_08():
     listener = parse_and_walk(load_test_case("test_08.txt"))
@@ -142,12 +142,12 @@ def test_test_11():
                                    '= 6 b', 
                                    '+ a b t1', 
                                    '= t1 c', 
-                                   'print c', 
+                                   'PRINT c', 
                                    '+ 1 2 t2', 
                                    '+ t2 3 t3', 
                                    '* 4 5 t4', 
                                    '+ t3 t4 t5', 
-                                   'print t5']
+                                   'PRINT t5']
 
 def test_test_12():
     listener = parse_and_walk(load_test_case("test_12.txt"))
@@ -160,12 +160,14 @@ def test_test_12():
                                    '= t4 c', 
                                    '= 5 a', 
                                    '= 6 b', 
-                                   '< a b t5', 
+                                   '< a b t5',
+                                   'GOTO_F t5 16',
                                    '/ a b t6', 
                                    '= t6 c', 
-                                   'print c', 
+                                   'PRINT c',
+                                   'GOTO 20',
                                    '+ b 1 t7', 
                                    '/ a t7 t8', 
                                    '= t8 c', 
-                                   'print c']
+                                   'PRINT c']
     

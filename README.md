@@ -27,5 +27,5 @@ python main.py
 
 Run tests
 ```python
-pytest -s -v semantic_test.py
+pytest -s -vv semantic_test.py
 ```

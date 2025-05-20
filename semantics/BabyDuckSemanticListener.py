@@ -28,6 +28,9 @@ class BabyDuckSemanticListener(BabyDuckListener):
         self.quadruples: list[str] = [] # here we'll be storing the final quadruples
         self.quadruple_print_mode = quadruple_print_mode
 
+        # Variables related with conditionals, loops and jumps
+        self.quadruple_jumps_stack: list[int] = [] # this is a stack
+
     def enterProgram_id(self, ctx):
         self.program_id = str(ctx.ID().getText())
         self.dirfuncs[self.program_id] = Function(name=self.program_id, type=FunctionType.VOID)
@@ -203,7 +206,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
 
             tmp_var = Variable(listener=self, type=result_type, scope=VariableScope.TEMPORAL)
             quadruple = " ".join([operand.to_symbol(), 
-                                   left_var.print(), 
+                                   left_var.print(),
                                    right_var.print(), 
                                    tmp_var.print()])
 
@@ -249,3 +252,47 @@ class BabyDuckSemanticListener(BabyDuckListener):
             quadruple = " ".join([operand.to_symbol(), 
                                    var.print()])
             self.quadruples.append(quadruple)
+
+    def enterIf_condition_right_parenthesis(self, ctx):
+        if self.quadruples_variables_stack:
+            var = self.quadruples_variables_stack.pop()
+
+            if var.variable.type != VariableType.BOOLEAN:
+                raise Exception(f"ERROR: Incompatible condition type {var.variable.type} for if statement (it should be boolean)")
+
+            quadruple = " ".join([OperandType.GOTO_F.to_symbol(), 
+                                    var.print(),
+                                    "TO_FILL"])
+            
+            self.quadruples.append(quadruple)
+            self.quadruple_jumps_stack.append(len(self.quadruples) - 1)
+            
+        # TODO: else, raise exception
+    
+    def enterIf_condition_else(self, ctx):
+        # Create and push the "GOTO" quadruple
+        quadruple = " ".join([OperandType.GOTO.to_symbol(), 
+                        "TO_FILL"])
+        self.quadruples.append(quadruple)
+        goto_quadruple_index = len(self.quadruples)-1 # Note how we're not pushing the quadruple index to the stack yet
+        
+        # Now we're exactly at the start of the else statement
+        # We need to fill the "TO_FILL" in the previous quadruple
+        if self.quadruple_jumps_stack:
+            jump_index = self.quadruple_jumps_stack.pop()
+            self.quadruples[jump_index] = self.quadruples[jump_index].replace("TO_FILL", str(len(self.quadruples) + 1))
+        else:
+            # Throw exception if the stack is empty
+            raise Exception("ERROR: Unmatched 'else' encountered. No corresponding 'if' statement was found on the stack.")
+        
+        # Now we need to create a jump for the "GOTO" quadruple we created at the beginning of this function
+        self.quadruple_jumps_stack.append(goto_quadruple_index)
+
+    def enterIf_condition_semi_colon(self, ctx):
+        if self.quadruple_jumps_stack:
+            # We need to fill the "TO_FILL" in the previous quadruple (either a GOTO - for if-else-statement, or a GOTO_F - for if-statement)
+            jump_index = self.quadruple_jumps_stack.pop()
+            self.quadruples[jump_index] = self.quadruples[jump_index].replace("TO_FILL", str(len(self.quadruples) + 1))
+        else:
+            # Throw exception if the stack is empty
+            raise Exception("ERROR: Unmatched 'end-if' encountered. No corresponding 'if' statement was found on the stack.")

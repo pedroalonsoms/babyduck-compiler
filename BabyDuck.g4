@@ -70,13 +70,16 @@ dec_statement: epsilon
              | statement
              | statement dec_statement;
 statement: assign
-         | condition
+         | if_condition
          | cycle
          | f_call
          | print;
 assign: ID ASSIGN expression SEMI_COLON;
-condition: IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS body SEMI_COLON
-         | IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS body ELSE body SEMI_COLON;
+if_condition_right_parenthesis: RIGHT_PARENTHESIS;
+if_condition_else: ELSE;
+if_condition_semi_colon: SEMI_COLON;
+if_condition: IF LEFT_PARENTHESIS expression if_condition_right_parenthesis body if_condition_semi_colon
+         | IF LEFT_PARENTHESIS expression if_condition_right_parenthesis body if_condition_else body if_condition_semi_colon;
 cycle: WHILE LEFT_PARENTHESIS expression RIGHT_PARENTHESIS DO body SEMI_COLON;
 f_call: ID LEFT_PARENTHESIS list_expression RIGHT_PARENTHESIS SEMI_COLON;
 list_expression: epsilon

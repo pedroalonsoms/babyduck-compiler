@@ -188,12 +188,39 @@ class BabyDuckListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by BabyDuckParser#condition.
-    def enterCondition(self, ctx:BabyDuckParser.ConditionContext):
+    # Enter a parse tree produced by BabyDuckParser#if_condition_right_parenthesis.
+    def enterIf_condition_right_parenthesis(self, ctx:BabyDuckParser.If_condition_right_parenthesisContext):
         pass
 
-    # Exit a parse tree produced by BabyDuckParser#condition.
-    def exitCondition(self, ctx:BabyDuckParser.ConditionContext):
+    # Exit a parse tree produced by BabyDuckParser#if_condition_right_parenthesis.
+    def exitIf_condition_right_parenthesis(self, ctx:BabyDuckParser.If_condition_right_parenthesisContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#if_condition_else.
+    def enterIf_condition_else(self, ctx:BabyDuckParser.If_condition_elseContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#if_condition_else.
+    def exitIf_condition_else(self, ctx:BabyDuckParser.If_condition_elseContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#if_condition_semi_colon.
+    def enterIf_condition_semi_colon(self, ctx:BabyDuckParser.If_condition_semi_colonContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#if_condition_semi_colon.
+    def exitIf_condition_semi_colon(self, ctx:BabyDuckParser.If_condition_semi_colonContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#if_condition.
+    def enterIf_condition(self, ctx:BabyDuckParser.If_conditionContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#if_condition.
+    def exitIf_condition(self, ctx:BabyDuckParser.If_conditionContext):
         pass
 
 

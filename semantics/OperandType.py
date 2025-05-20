@@ -12,6 +12,8 @@ class OperandType(Enum):
     LEFT_PARENTHESIS = auto()
     RIGHT_PARENTHESIS = auto()
     PRINT = auto()
+    GOTO = auto()
+    GOTO_F = auto()
 
     def to_symbol(self) -> str:
         symbol_map = {
@@ -25,6 +27,8 @@ class OperandType(Enum):
             OperandType.ASSIGN: "=",
             OperandType.LEFT_PARENTHESIS: "(",
             OperandType.RIGHT_PARENTHESIS: ")",
-            OperandType.PRINT: "print",
+            OperandType.PRINT: "PRINT",
+            OperandType.GOTO: "GOTO",
+            OperandType.GOTO_F: "GOTO_F",
         }
         return symbol_map[self]
