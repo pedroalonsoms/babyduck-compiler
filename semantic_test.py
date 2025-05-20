@@ -32,18 +32,17 @@ def parse_and_walk(input_str):
 
 def test_test_01():
     listener = parse_and_walk(load_test_case("test_01.txt"))
-    print(f"DIRFUNCS = {listener.dirfuncs}")
     assert listener.dirfuncs == {
         'pelos': Function(
             name='pelos',
             type=FunctionType.VOID,
             vars={
-                'a': Variable(name='a', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_000),
-                'k': Variable(name='k', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_001),
-                'j': Variable(name='j', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_002),
-                'i': Variable(name='i', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_003),
-                'y': Variable(name='y', type=VariableType.FLOAT, scope=VariableScope.GLOBAL, virtual_direction=5_000),
-                'x': Variable(name='x', type=VariableType.FLOAT, scope=VariableScope.GLOBAL, virtual_direction=5_001),
+                'a': Variable(listener=listener, name='a', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_000),
+                'k': Variable(listener=listener, name='k', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_001),
+                'j': Variable(listener=listener, name='j', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_002),
+                'i': Variable(listener=listener, name='i', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_003),
+                'y': Variable(listener=listener, name='y', type=VariableType.FLOAT, scope=VariableScope.GLOBAL, virtual_direction=5_000),
+                'x': Variable(listener=listener, name='x', type=VariableType.FLOAT, scope=VariableScope.GLOBAL, virtual_direction=5_001),
             }
         ),
         'uno': Function(
@@ -51,8 +50,8 @@ def test_test_01():
             type=FunctionType.VOID,
             vars={
                 # TODO: fix this stuff
-                'x': Variable(name='x', type=VariableType.INT, scope=VariableScope.LOCAL, virtual_direction=9_000),
-                'i': Variable(name='i', type=VariableType.INT, scope=VariableScope.LOCAL, virtual_direction=9_001),
+                'i': Variable(listener=listener, name='i', type=VariableType.INT, scope=VariableScope.LOCAL, virtual_direction=9_000),
+                'x': Variable(listener=listener, name='x', type=VariableType.INT, scope=VariableScope.LOCAL, virtual_direction=9_001),
             }
         )
     }
@@ -60,49 +59,44 @@ def test_test_01():
 def test_test_02():
     with pytest.raises(Exception) as error:
         parse_and_walk(load_test_case("test_02.txt"))
-    print(error.value)
     assert str(error.value) == "ERROR: Variable 'k' was already declared on function directory 'pelos'"
 
 def test_test_03():
     with pytest.raises(Exception) as error:
         parse_and_walk(load_test_case("test_03.txt"))
-    print(error.value)
     assert str(error.value) == "ERROR: Function 'uno' was already declared"
 
 def test_test_04():
     with pytest.raises(Exception) as error:
         parse_and_walk(load_test_case("test_04.txt"))
-    print(error.value)
     assert str(error.value) == "ERROR: Function 'uno' was already declared"
 
 def test_test_05():
     listener = parse_and_walk(load_test_case("test_05.txt"))
-    print(f"DIRFUNCS = {listener.dirfuncs}")
     assert listener.dirfuncs == {
         'Test1': Function(
             name='Test1',
             type=FunctionType.VOID,
             vars={
-                'global2': Variable(name='global2', type=VariableType.INT),
-                'global1': Variable(name='global1', type=VariableType.INT),
-                'global3': Variable(name='global3', type=VariableType.FLOAT),
+                'global2': Variable(listener=listener, name='global2', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_000),
+                'global1': Variable(listener=listener, name='global1', type=VariableType.INT, scope=VariableScope.GLOBAL, virtual_direction=1_001),
+                'global3': Variable(listener=listener, name='global3', type=VariableType.FLOAT, scope=VariableScope.GLOBAL, virtual_direction=5_000),
             }
         ),
         'testFunc': Function(
             name='testFunc',
             type=FunctionType.VOID,
             vars={
-                'param1': Variable(name='param1', type=VariableType.INT),
-                'param2': Variable(name='param2', type=VariableType.FLOAT),
-                'local1': Variable(name='local1', type=VariableType.INT),
-                'local2': Variable(name='local2', type=VariableType.FLOAT),
+                'param2': Variable(listener=listener, name='param2', type=VariableType.FLOAT, scope=VariableScope.LOCAL, virtual_direction=13_000),
+                'param1': Variable(listener=listener, name='param1', type=VariableType.INT, scope=VariableScope.LOCAL, virtual_direction=9_000),
+                'local1': Variable(listener=listener, name='local1', type=VariableType.INT, scope=VariableScope.LOCAL, virtual_direction=9_001),
+                'local2': Variable(listener=listener, name='local2', type=VariableType.FLOAT, scope=VariableScope.LOCAL, virtual_direction=13_001),
             }
         )
     }
 
 def test_test_06():
     listener = parse_and_walk(load_test_case("test_06.txt"))
-    print("QUADRUPLES:", listener.quadruples)
     assert listener.quadruples == ['= 1 a', 
                                    '= 2 b',
                                    '= 3 c', 
@@ -113,14 +107,12 @@ def test_test_06():
 
 def test_test_07():
     listener = parse_and_walk(load_test_case("test_07.txt"))
-    print("QUADRUPLES:", listener.quadruples)
     assert listener.quadruples == ['= 1 a', 
                                    '= 2 b', 
                                    '< a b t1']
 
 def test_test_08():
     listener = parse_and_walk(load_test_case("test_08.txt"))
-    print("QUADRUPLES:", listener.quadruples)
     assert listener.quadruples == ['= 1 a', 
                                    '= 2 b', 
                                    '* a b t1', 
@@ -131,7 +123,6 @@ def test_test_08():
 
 def test_test_09():
     listener = parse_and_walk(load_test_case("test_09.txt"))
-    print("QUADRUPLES:", listener.quadruples)
     assert listener.quadruples == ['= 1 a', 
                                    '= 2 b', 
                                    '* a b t1', 
@@ -143,12 +134,10 @@ def test_test_09():
 def test_test_10():
     with pytest.raises(Exception) as error:
         parse_and_walk(load_test_case("test_10.txt"))
-    print(error.value)
     assert str(error.value) == "ERROR: Variable d has not been declared"
 
 def test_test_11():
     listener = parse_and_walk(load_test_case("test_11.txt"))
-    print("QUADRUPLES:", listener.quadruples)
     assert listener.quadruples == ['= 5 a', 
                                    '= 6 b', 
                                    '+ a b t1', 
@@ -162,7 +151,6 @@ def test_test_11():
 
 def test_test_12():
     listener = parse_and_walk(load_test_case("test_12.txt"))
-    print("QUADRUPLES:", listener.quadruples)
     assert listener.quadruples == ['= 1 a', 
                                    '= 2 b', 
                                    '* a b t1', 

@@ -35,7 +35,6 @@ class Variable:
             # For temporary variables we need to automatically set the name (t1, t2, t3, t4, ...)
             if self.scope == VariableScope.TEMPORAL:
                 tmp_var_subindex = self.listener.virtual_directions.get_next_temporal_index()
-                print("PEDRO", tmp_var_subindex)
                 self.name = "t" + str(tmp_var_subindex)
     
     def print(self):

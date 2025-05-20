@@ -61,7 +61,6 @@ list_id: var_id
 type: INT
     | FLOAT;
 func_id: ID;
-// TODO: we need to differentiate between local variable declarations and global variable declarations
 funcs: VOID func_id LEFT_PARENTHESIS list_params RIGHT_PARENTHESIS LEFT_BRACKET dec_vars body RIGHT_BRACKET SEMI_COLON;
 list_params: epsilon
            | var_id COLON var_type

@@ -11,7 +11,6 @@ from semantics.VirtualDirections import VirtualDirections
 from semantics.QuadruplePrintMode import QuadruplePrintMode
 from antlr4 import *
 
-
 class BabyDuckSemanticListener(BabyDuckListener):
     def __init__(self, quadruple_print_mode: QuadruplePrintMode = QuadruplePrintMode.USE_VARIABLE_NAME):
         super().__init__()
@@ -81,13 +80,12 @@ class BabyDuckSemanticListener(BabyDuckListener):
                 raise Exception(f"ERROR: Variable '{last_seen_var_id}' was already declared on function directory '{function_directory.name}'")
             
             # We create the new variable
-            #scope = VariableScope.GLOBAL
-            #if self.last_seen_func_id == self.program_id:
-            #    scope = VariableScope.GLOBAL
-            #else:
-                # TODO: fix this in g4 file
-                # scope = VariableScope.
-            function_directory.vars[last_seen_var_id] = Variable(listener=self, name=last_seen_var_id, type=var_type, scope=VariableScope.GLOBAL)
+            scope = None
+            if self.last_seen_func_id == self.program_id:
+                scope = VariableScope.GLOBAL
+            else:
+                scope = VariableScope.LOCAL
+            function_directory.vars[last_seen_var_id] = Variable(listener=self, name=last_seen_var_id, type=var_type, scope=scope)
 
     def enterFactor_with_id(self, ctx):
         # TODO: improve comments
