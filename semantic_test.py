@@ -170,4 +170,33 @@ def test_test_12():
                                    '/ a t7 t8', 
                                    '= t8 c', 
                                    'PRINT c']
+
+def test_test_13():
+    listener = parse_and_walk(load_test_case("test_13.txt"))
+    assert listener.quadruples == ['= 1 A', 
+                                   '= 2 B', 
+                                   '= 3 C', 
+                                   '= 4 D', 
+                                   '> A B t1', 
+                                   'GOTO_F t1 16', 
+                                   '* C D t2', 
+                                   '= t2 B', 
+                                   '+ C D t3', 
+                                   '> B t3 t4', 
+                                   'GOTO_F t4 15', 
+                                   '+ A B t5', 
+                                   '= t5 C', 
+                                   'PRINT B', 
+                                   'GOTO 24', 
+                                   '+ A B t6', 
+                                   '= t6 C', 
+                                   '> A C t7', 
+                                   'GOTO_F t7 24', 
+                                   '+ B A t8', 
+                                   '= t8 D', 
+                                   '+ A B t9', 
+                                   'PRINT t9', 
+                                   '* D A t10', 
+                                   '- B t10 t11', 
+                                   '= t11 C']
     
