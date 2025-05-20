@@ -8,23 +8,26 @@ from semantics.OperandType import OperandType
 from semantics.SemanticCube import SEMANTIC_CUBE
 from semantics.QuadrupleStackVariable import QuadrupleStackVariable
 from semantics.VirtualDirections import VirtualDirections
+from semantics.QuadruplePrintMode import QuadruplePrintMode
 from antlr4 import *
 
-USE_VARIABLE_NAME = True
 
 class BabyDuckSemanticListener(BabyDuckListener):
-    def __init__(self):
+    def __init__(self, quadruple_print_mode: QuadruplePrintMode = QuadruplePrintMode.USE_VARIABLE_NAME):
         super().__init__()
 
+        # Variables related with function and variable declarations
         self.dirfuncs: dict[str, Function] = {}
         self.program_id = ""
         self.last_seen_var_ids_stack: list[str] = [] # this is a stack
         self.last_seen_func_id = ""
+        self.virtual_directions = VirtualDirections()
 
         # Variables related with quadruples
         self.quadruples_operands_stack: list[OperandType] = [] # this is a stack
         self.quadruples_variables_stack: list[QuadrupleStackVariable] = [] # this is a stack
         self.quadruples: list[str] = [] # here we'll be storing the final quadruples
+        self.quadruple_print_mode = quadruple_print_mode
 
     def enterProgram_id(self, ctx):
         self.program_id = str(ctx.ID().getText())
@@ -84,7 +87,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
             #else:
                 # TODO: fix this in g4 file
                 # scope = VariableScope.
-            function_directory.vars[last_seen_var_id] = Variable(name=last_seen_var_id, type=var_type, scope=VariableScope.GLOBAL)
+            function_directory.vars[last_seen_var_id] = Variable(listener=self, name=last_seen_var_id, type=var_type, scope=VariableScope.GLOBAL)
 
     def enterFactor_with_id(self, ctx):
         # TODO: improve comments
@@ -98,7 +101,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
         else:
             raise Exception(f"ERROR: Variable {factor_id} has not been declared")
         
-        self.quadruples_variables_stack.append(QuadrupleStackVariable(sign=factor_sign, variable=current_var))
+        self.quadruples_variables_stack.append(QuadrupleStackVariable(listener=self, sign=factor_sign, variable=current_var))
 
     def enterFactor_with_cte(self, ctx):
         # TODO: improve comments
@@ -107,16 +110,14 @@ class BabyDuckSemanticListener(BabyDuckListener):
         if ctx.cte().CTE_INT():
             # then we know our constant its an integer
             factor_cte = str(ctx.cte().CTE_INT().getText())
-            current_var = Variable(name=factor_sign + factor_cte, type=VariableType.INT, scope=VariableScope.CONSTANTS)
+            current_var = Variable(listener=self, name=factor_sign + factor_cte, type=VariableType.INT, scope=VariableScope.CONSTANTS)
         elif ctx.cte().CTE_FLOAT():
             # then we know our constant its a float
             factor_cte = str(ctx.cte().CTE_FLOAT().getText())
-            current_var = Variable(name=factor_sign + factor_cte, type=VariableType.FLOAT, scope=VariableScope.CONSTANTS)
+            current_var = Variable(listener=self, name=factor_sign + factor_cte, type=VariableType.FLOAT, scope=VariableScope.CONSTANTS)
         # TODO: add else here to handle exception
         
-        self.quadruples_variables_stack.append(QuadrupleStackVariable(variable=current_var))
-
-        print("QUADRUPLES VARIABLES STACK", self.quadruples_variables_stack)
+        self.quadruples_variables_stack.append(QuadrupleStackVariable(listener=self, variable=current_var))
 
     def enterTermino_operation(self, ctx):
         if ctx.TIMES():
@@ -160,13 +161,13 @@ class BabyDuckSemanticListener(BabyDuckListener):
                 raise Exception(f"ERROR: Unsupported operand {operand} between type {left_var.type} and type {right_var.type}")
             result_type = SEMANTIC_CUBE[semantic_cube_key]
 
-            tmp_var = Variable(type=result_type, scope=VariableScope.TEMPORAL)
+            tmp_var = Variable(listener=self, type=result_type, scope=VariableScope.TEMPORAL)
             quadruple = " ".join([operand.to_symbol(), 
-                                   left_var.print(use_variable_name=USE_VARIABLE_NAME), 
-                                   right_var.print(use_variable_name=USE_VARIABLE_NAME), 
-                                   tmp_var.print(use_variable_name=USE_VARIABLE_NAME)])
+                                   left_var.print(), 
+                                   right_var.print(), 
+                                   tmp_var.print()])
 
-            self.quadruples_variables_stack.append(QuadrupleStackVariable(variable=tmp_var))
+            self.quadruples_variables_stack.append(QuadrupleStackVariable(listener=self, variable=tmp_var))
             self.quadruples.append(quadruple)
 
     def exitFactor(self, ctx):
@@ -181,13 +182,13 @@ class BabyDuckSemanticListener(BabyDuckListener):
                 raise Exception(f"ERROR: Unsupported operand {operand} between type {left_var.variable.type} and type {right_var.variable.type}")
             result_type = SEMANTIC_CUBE[semantic_cube_key]
 
-            tmp_var = Variable(type=result_type, scope=VariableScope.TEMPORAL)
+            tmp_var = Variable(listener=self, type=result_type, scope=VariableScope.TEMPORAL)
             quadruple = " ".join([operand.to_symbol(),
-                                   left_var.print(use_variable_name=USE_VARIABLE_NAME), 
-                                   right_var.print(use_variable_name=USE_VARIABLE_NAME), 
-                                   tmp_var.print(use_variable_name=USE_VARIABLE_NAME)])
+                                   left_var.print(), 
+                                   right_var.print(), 
+                                   tmp_var.print()])
 
-            self.quadruples_variables_stack.append(QuadrupleStackVariable(variable=tmp_var))
+            self.quadruples_variables_stack.append(QuadrupleStackVariable(listener=self, variable=tmp_var))
             self.quadruples.append(quadruple)
     
     def exitExp(self, ctx):
@@ -202,13 +203,13 @@ class BabyDuckSemanticListener(BabyDuckListener):
                 raise Exception(f"ERROR: Unsupported operand {operand} between type {left_var.variable.type} and type {right_var.variable.type}")
             result_type = SEMANTIC_CUBE[semantic_cube_key]
 
-            tmp_var = Variable(type=result_type, scope=VariableScope.TEMPORAL)
+            tmp_var = Variable(listener=self, type=result_type, scope=VariableScope.TEMPORAL)
             quadruple = " ".join([operand.to_symbol(), 
-                                   left_var.print(use_variable_name=USE_VARIABLE_NAME), 
-                                   right_var.print(use_variable_name=USE_VARIABLE_NAME), 
-                                   tmp_var.print(use_variable_name=USE_VARIABLE_NAME)])
+                                   left_var.print(), 
+                                   right_var.print(), 
+                                   tmp_var.print()])
 
-            self.quadruples_variables_stack.append(QuadrupleStackVariable(variable=tmp_var))
+            self.quadruples_variables_stack.append(QuadrupleStackVariable(listener=self, variable=tmp_var))
             self.quadruples.append(quadruple)
 
     def enterAssign(self, ctx):
@@ -221,7 +222,7 @@ class BabyDuckSemanticListener(BabyDuckListener):
         else:
             raise Exception(f"ERROR: Variable {assign_id} has not been declared")
         
-        self.quadruples_variables_stack.append(QuadrupleStackVariable(variable=current_var))
+        self.quadruples_variables_stack.append(QuadrupleStackVariable(listener=self, variable=current_var))
         self.quadruples_operands_stack.append(OperandType.ASSIGN)
 
     def exitAssign(self, ctx):
@@ -235,8 +236,8 @@ class BabyDuckSemanticListener(BabyDuckListener):
                 raise Exception(f"ERROR: Incompatible assignation between type {left_var.type} and type {right_var.type}")
 
             quadruple = " ".join([operand.to_symbol(), 
-                                   right_var.print(use_variable_name=USE_VARIABLE_NAME), 
-                                   left_var.print(use_variable_name=USE_VARIABLE_NAME)])
+                                   right_var.print(), 
+                                   left_var.print()])
             self.quadruples.append(quadruple)
 
     def enterPrint(self, ctx):
@@ -248,5 +249,5 @@ class BabyDuckSemanticListener(BabyDuckListener):
             operand = self.quadruples_operands_stack.pop()
 
             quadruple = " ".join([operand.to_symbol(), 
-                                   var.print(use_variable_name=USE_VARIABLE_NAME)])
+                                   var.print()])
             self.quadruples.append(quadruple)

@@ -28,7 +28,6 @@ def parse_and_walk(input_str):
     walker = ParseTreeWalker()
     listener = BabyDuckSemanticListener()
     walker.walk(listener, tree)
-    VirtualDirections.reset_counters()
     return listener
 
 def test_test_01():
