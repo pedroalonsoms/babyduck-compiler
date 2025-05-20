@@ -241,11 +241,17 @@ class BabyDuckSemanticListener(BabyDuckListener):
                                    left_var.print()])
             self.quadruples.append(quadruple)
 
+    def enterPrint_cte_string(self, ctx):
+        # Whenever we see a string, we need to create a constant variable and add it to the quadruples
+        current_var = Variable(listener=self, name=str(ctx.CTE_STRING().getText()), type=VariableType.STRING, scope=VariableScope.CONSTANTS)
+        self.quadruples_variables_stack.append(QuadrupleStackVariable(listener=self, variable=current_var))
+
     def enterPrint(self, ctx):
+        # Append a print operand to the stack for the following expression
         self.quadruples_operands_stack.append(OperandType.PRINT)
     
-    # TODO: IMPORTANT, FIX THIS SO THAT IT WORKS WITH MULTIPLE PRINTS
-    def exitPrint(self, ctx):
+    def enterPrint_comma(self, ctx):
+        # Parse the previous expression and add it to the quadruples
         if self.quadruples_operands_stack and self.quadruples_operands_stack[-1] == OperandType.PRINT:
             var = self.quadruples_variables_stack.pop()
             operand = self.quadruples_operands_stack.pop()
@@ -253,6 +259,25 @@ class BabyDuckSemanticListener(BabyDuckListener):
             quadruple = " ".join([operand.to_symbol(), 
                                    var.print()])
             self.quadruples.append(quadruple)
+        else:
+            #TODO: maybe this is impossible lol
+            pass
+
+        # Append a print operand to the stack for the following expression
+        self.quadruples_operands_stack.append(OperandType.PRINT)
+    
+    def enterPrint_right_parenthesis(self, ctx):
+        # Parse the previous expression and add it to the quadruples
+        if self.quadruples_operands_stack and self.quadruples_operands_stack[-1] == OperandType.PRINT:
+            var = self.quadruples_variables_stack.pop()
+            operand = self.quadruples_operands_stack.pop()
+
+            quadruple = " ".join([operand.to_symbol(), 
+                                   var.print()])
+            self.quadruples.append(quadruple)
+        else:
+            #TODO: maybe this is impossible lol
+            pass
 
     def enterIf_condition_right_parenthesis(self, ctx):
         if self.quadruples_variables_stack:

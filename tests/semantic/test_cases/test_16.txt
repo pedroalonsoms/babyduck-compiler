@@ -1,0 +1,13 @@
+program pelos;
+
+var
+    A, B : float;
+
+main {
+    A = 1.0;
+    B = 2.0;
+
+    print(A + B, A * B);
+}
+
+end

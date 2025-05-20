@@ -269,6 +269,33 @@ class BabyDuckListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by BabyDuckParser#print_comma.
+    def enterPrint_comma(self, ctx:BabyDuckParser.Print_commaContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#print_comma.
+    def exitPrint_comma(self, ctx:BabyDuckParser.Print_commaContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#print_cte_string.
+    def enterPrint_cte_string(self, ctx:BabyDuckParser.Print_cte_stringContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#print_cte_string.
+    def exitPrint_cte_string(self, ctx:BabyDuckParser.Print_cte_stringContext):
+        pass
+
+
+    # Enter a parse tree produced by BabyDuckParser#print_right_parenthesis.
+    def enterPrint_right_parenthesis(self, ctx:BabyDuckParser.Print_right_parenthesisContext):
+        pass
+
+    # Exit a parse tree produced by BabyDuckParser#print_right_parenthesis.
+    def exitPrint_right_parenthesis(self, ctx:BabyDuckParser.Print_right_parenthesisContext):
+        pass
+
+
     # Enter a parse tree produced by BabyDuckParser#print.
     def enterPrint(self, ctx:BabyDuckParser.PrintContext):
         pass

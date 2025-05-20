@@ -86,10 +86,13 @@ f_call: ID LEFT_PARENTHESIS list_expression RIGHT_PARENTHESIS SEMI_COLON;
 list_expression: epsilon
                | expression
                | expression COMMA list_expression;
-print: PRINT LEFT_PARENTHESIS print_args RIGHT_PARENTHESIS SEMI_COLON;
+print_comma: COMMA;
+print_cte_string: CTE_STRING;
+print_right_parenthesis: RIGHT_PARENTHESIS;
+print: PRINT LEFT_PARENTHESIS print_args print_right_parenthesis SEMI_COLON;
 print_args: expression
-          | CTE_STRING
-          | print_args COMMA print_args;
+          | print_cte_string
+          | print_args print_comma print_args;
 expression_operation: GREATER_THAN
                     | LESS_THAN
                     | NOT_EQUALS;
